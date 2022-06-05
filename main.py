@@ -4,6 +4,30 @@ version = 'v.0.1'                         #
 #-----------------------------------------#
 class FileStatusCheck:
     
+    def StartUpCheck():
+        import os
+        if FileStatusCheck.CheckVersion() is True:
+            print('Valid Version!')
+            pass
+        else:
+            print('Bad/Outdated version :(')
+            os._exit(1)
+        global impudkey    
+        impudkey = input('please enter ur key...\n') #asks a user for his key
+        
+        if FileStatusCheck.CheckKey(impudkey) is True:
+            print('Valid key!')
+            pass
+        else:
+            print('Key is invalid :(')
+            os._exit(1)
+    
+    def Launchsynccheck(key):
+        import threading
+        CheckSys = threading.Thread(target=FileStatusCheck.synccheck, args=(impudkey,))  #runs a daemon to continiously check if the key is valid, if not the program stops
+        CheckSys.daemon = True
+        CheckSys.start()
+    
     def CheckVersion():
         import requests
         CurrentlySupportedVersions =requests.get('https://pastebin.com/raw/wEdrEKGY' ).text  #*-*-*
@@ -22,7 +46,6 @@ class FileStatusCheck:
                                                                                    # then use something like this https://www.md5online.org/md5-encrypt.html to convert ur keys to hashes
         lines = CorrectKeyHashes.splitlines()
         for line in lines:
-            
             if hashedkey == line.strip():
                 return True
             else:
@@ -43,23 +66,13 @@ class FileStatusCheck:
                     print('Key has been Deleted/ modified , please contact support if this isnt supposed to hapen.')
                     os._exit(1)
             time.sleep(10)
-            
 
 if __name__ == '__main__':
-    import threading,os,time
-    if FileStatusCheck.CheckVersion() is True: 
-        print('Valid version!')   
-    else: 
-        print('invalid /outdated system, please update the software to a recent version...');os._exit(1)
-    impd = input('please enter ur key...\n') #asks a user for his key
-    if FileStatusCheck.CheckKey(impd)  is True:   #runs the function from above and checks if key is valid
-        print('Valid key!')  
-    else: 
-        print('Key is invalid :(') ; os._exit(1)
-    CompletedChecks = True #sets a var to true for checking if there was no bypass lateron
-    CheckSys = threading.Thread(target=FileStatusCheck.synccheck, args=(impd,))  #runs a daemon to continiously check if the key is valid, if not the program stops
-    CheckSys.daemon = True
-    CheckSys.start()
+    import threading
+    
+    FileStatusCheck.StartUpCheck()
+    FileStatusCheck.Launchsynccheck(impudkey)
+    
     
     #----------------------------------------Start of ur code-----------------------------------(will execute if version is correct and key is correct)
     
@@ -68,11 +81,7 @@ if __name__ == '__main__':
     
     
     
-    
-    
-    
 
-    
     
     #EXTRA INFO :::
     #this code only is usefull when compiled to an executable / obfuscated / converted to other language, if not, people can simply decompile / modify code.
