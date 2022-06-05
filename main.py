@@ -70,8 +70,9 @@ class FileStatusCheck:
 if __name__ == '__main__':
     import threading
     
-    FileStatusCheck.StartUpCheck()
-    FileStatusCheck.Launchsynccheck(impudkey)
+    FileStatusCheck.StartUpCheck()  #this function goes trough getting the users key and checking it + assigning global impudkey to the given key
+    
+    FileStatusCheck.Launchsynccheck(impudkey) #this function continously checks for key database changes (takes the impudkey from previous step as input)
     
     
     #----------------------------------------Start of ur code-----------------------------------(will execute if version is correct and key is correct)
